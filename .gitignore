@@ -1,0 +1,24 @@
+#Region "Private helper functions"
+        Protected Function PrintTransitionTable() As String
+            'TODO: Display transition functions in tabular format 
+            Dim tb As New Text.StringBuilder
+            Dim stateList As New List(Of String)
+            Dim FormerPrevState As String
+            Dim NewPrevState As String
+            tb.AppendLine("TRANSITION TABLE")
+            For Each tf As TransFunc In _transitions
+                If Not stateList.Contains($"{tf.PrevState}") Then
+                    tb.AppendLine($"{tf.PrevState}, |, {tf.Input}, {tf.NextState}")
+                    FormerPrevState = tf.PrevState
+                    For Each TransFunc In _transitions
+                        NewPrevState = tf.PrevState
+                        If String.Compare(FormerPrevState, NewPrevState, True) = 0 Then
+                            tb.Append($" | {tf.Input}, {tf.NextState}")
+                        End If
+                    Next
+                End If
+            Next
+            Return tb.ToString()
+            stateList.Clear()
+        End Function
+#End Region
